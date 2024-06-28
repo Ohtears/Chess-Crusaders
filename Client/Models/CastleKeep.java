@@ -1,10 +1,9 @@
-package Client.Models.CrusaderUnits;
+package Client.Models;
 
 import java.awt.Point;
 
-import Client.Models.Unit;
+public class CastleKeep implements Unit {
 
-public class Swordsman implements Unit  {
     private String name;
     private int hp;
     private int maxHp;
@@ -16,18 +15,17 @@ public class Swordsman implements Unit  {
     private String sound;
     private String side;
 
-    public Swordsman() {
-        this.name = "Swordsman";
+    public CastleKeep() {
+        this.name = "CastleKeep";
         this.hp = 50;
         this.maxHp = 50;
         this.attack = 10;
         this.movement = new Point(1, 1);
         this.rangemovement = 1;
         this.attackRange = new Point(1, 1);
-        this.image = "Client\\Assets\\Images\\CrusaderUnits\\Swordsman.png";
+        this.image = "Client\\Assets\\Images\\GameBoard\\castlekeep.png";
         this.sound = "A.wav";
-        this.side = "Crusader";
-
+        this.side = null;
     }
 
     public String getName() {
@@ -69,7 +67,11 @@ public class Swordsman implements Unit  {
     public void setHp(int hp) {
         this.hp = hp;
     }
+
+    @Override
     public String getSide() {
         return side;
     }
+
+
 }

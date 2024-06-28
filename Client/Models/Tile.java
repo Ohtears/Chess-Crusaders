@@ -1,27 +1,27 @@
 package Client.Models;
 
-import java.awt.Point;
-
 public class Tile {
 
     public enum Type {
         EMPTY, NONEMPTY //FOR future improvment just in case we want to add obstacles and terrain
     }
 
-    private Point point;
+
+    @SuppressWarnings("unused")
+    private int x;
+    @SuppressWarnings("unused")
+    private int y;
 
     private boolean occupied;
-
+    private Unit unit;
     private Type type;
     
-    public Tile(Point point, Type type) {
-        this.point = point;
+    public Tile(int x, int y, Type type) {
+        this.x = x;
+        this.y = y;
         this.type = type;
         this.occupied = false;
-    }
-
-    public Point getPoint() {
-        return point;
+        this.unit = null;
     }
 
     public Tile.Type getType() {
@@ -31,8 +31,15 @@ public class Tile {
     public void setteroccupation(boolean occupation){
         this.occupied = occupation;
     }
-    public boolean getteroccupation(){
+    public boolean isOccupied() {
         return this.occupied;
     }
+    public Unit getUnit() {
+        return unit;
+    }
 
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+        this.occupied = (unit != null); 
+    }
 }

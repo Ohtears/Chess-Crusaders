@@ -104,6 +104,11 @@ public class GameBoardUI extends JFrame {
     
         List<Point> validMoves = getValidMoves(unit, x, y);
     
+        int selectedIndex = x * 8 + y;
+        JLabel selectedLabel = (JLabel) boardPanel.getComponent(selectedIndex);
+        selectedLabel.setBackground(new Color(0, 255, 0, 109)); 
+        highlightedSquares.add(selectedLabel);
+
         for (Point move : validMoves) {
             int newX = move.x;
             int newY = move.y;
@@ -114,9 +119,9 @@ public class GameBoardUI extends JFrame {
                 Unit targetUnit = GameBoard.board[newX][newY].getUnit();
 
                 if (unit.getStrength() >= targetUnit.getStrength() && !unit.getSide().equals(targetUnit.getSide()) ) {
-                    highlight.setBackground(new Color(255, 255, 0, 109)); 
+                    highlight.setBackground(new Color(255, 255, 0, 109)); //yellow
                 } else if (!unit.getSide().equals(targetUnit.getSide())) {
-                    highlight.setBackground(new Color(255, 0, 0, 109)); 
+                    highlight.setBackground(new Color(255, 0, 0, 109)); //red
                 }
             } else {
                 highlight.setBackground(new Color(209, 176, 81, 109)); 

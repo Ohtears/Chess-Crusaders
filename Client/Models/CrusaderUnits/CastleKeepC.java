@@ -1,8 +1,8 @@
-package Client.Models.ArabUnits;
+package Client.Models.CrusaderUnits;
 
 import Client.Models.Unit;
 
-public class CastleKeep implements Unit {
+public class CastleKeepC implements Unit {
 
     private String name;
     private int hp;
@@ -14,7 +14,7 @@ public class CastleKeep implements Unit {
     private String side;
     private int[][] direction;
 
-    public CastleKeep() {
+    public CastleKeepC() {
         this.name = "CastleKeep";
         this.hp = 50;
         this.maxHp = 50;
@@ -23,7 +23,7 @@ public class CastleKeep implements Unit {
         this.rangemovement = 1;
         this.image = "Client\\Assets\\Images\\GameBoard\\castlekeep.png";
         this.sound = "A.wav";
-        this.side = "Islamic";
+        this.side = "Crusader";
     }
 
     public String getName() {

@@ -39,12 +39,23 @@ public class GameBoard {
         Tile startTile = board[startX][startY];
         Tile endTile = board[endX][endY];
 
-        if (startTile.isOccupied() && !endTile.isOccupied()) {
+        if (startTile.isOccupied()) {
             Unit unit = startTile.getUnit();
             startTile.setUnit(null);
+            if (endTile.isOccupied()) {
+                removeUnit(endX, endY);
+            }
             endTile.setUnit(unit);
         } else {
             System.out.println("Invalid move.");
         }
+    }
+
+    public boolean isOccupied(int x, int y) {
+        return board[x][y].isOccupied();
+    }
+
+    public void removeUnit(int x, int y) {
+        board[x][y].setUnit(null);
     }
 }

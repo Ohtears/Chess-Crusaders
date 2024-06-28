@@ -7,6 +7,7 @@ import Client.Models.ArabUnits.Assassin;
 import Client.Models.ArabUnits.HorseArcher;
 import Client.Models.ArabUnits.SassanidKnight;
 import Client.Models.ArabUnits.Slave;
+import Client.Models.CrusaderUnits.CastleKeep;
 import Client.Models.CrusaderUnits.Conscript;
 import Client.Models.CrusaderUnits.Crossbowman;
 import Client.Models.CrusaderUnits.Maceman;

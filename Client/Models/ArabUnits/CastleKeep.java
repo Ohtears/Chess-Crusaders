@@ -1,31 +1,29 @@
-package Client.Models;
+package Client.Models.ArabUnits;
 
-import java.awt.Point;
+import Client.Models.Unit;
 
 public class CastleKeep implements Unit {
 
     private String name;
     private int hp;
     private int maxHp;
-    private int attack;
-    private Point movement;
+    private int strength;
     private int rangemovement;
-    private Point attackRange;
     private String image;
     private String sound;
     private String side;
+    private int[][] direction;
 
     public CastleKeep() {
         this.name = "CastleKeep";
         this.hp = 50;
         this.maxHp = 50;
-        this.attack = 10;
-        this.movement = new Point(1, 1);
+        this.strength = 1;
+        this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
-        this.attackRange = new Point(1, 1);
         this.image = "Client\\Assets\\Images\\GameBoard\\castlekeep.png";
         this.sound = "A.wav";
-        this.side = null;
+        this.side = "Islamic";
     }
 
     public String getName() {
@@ -39,23 +37,9 @@ public class CastleKeep implements Unit {
     public int getMaxHp() {
         return maxHp;
     }
-
-    public int getAttack() {
-        return attack;
-    }
-
-    public Point getMovement() {
-        return movement;
-    }
-
     public int getRange() {
         return rangemovement;
     }
-
-    public Point getAttackRange() {
-        return attackRange;
-    }
-
     public String getImage() {
         return image;
     }
@@ -68,10 +52,15 @@ public class CastleKeep implements Unit {
         this.hp = hp;
     }
 
-    @Override
     public String getSide() {
         return side;
     }
 
+    public int[][] getDirections() {
+        return direction;
+    }
+    public int getStrength() {
+        return strength;
+    }
 
 }

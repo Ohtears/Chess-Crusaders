@@ -1,29 +1,26 @@
 package Client.Models.CrusaderUnits;
 
-import java.awt.Point;
-
 import Client.Models.Unit;
 
 public class Maceman implements Unit  {
     private String name;
     private int hp;
     private int maxHp;
-    private int attack;
-    private Point movement;
+    private int strength;
     private int rangemovement;
-    private Point attackRange;
     private String image;
     private String sound;
     private String side;
+    private int[][] direction;
+
 
     public Maceman() {
         this.name = "Maceman";
         this.hp = 50;
         this.maxHp = 50;
-        this.attack = 10;
-        this.movement = new Point(1, 1);
+        this.strength = 0;
+        this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
-        this.attackRange = new Point(1, 1);
         this.image = "Client\\Assets\\Images\\CrusaderUnits\\Maceman.png";
         this.sound = "A.wav";
         this.side = "Crusader";
@@ -41,21 +38,8 @@ public class Maceman implements Unit  {
     public int getMaxHp() {
         return maxHp;
     }
-
-    public int getAttack() {
-        return attack;
-    }
-
-    public Point getMovement() {
-        return movement;
-    }
-
     public int getRange() {
         return rangemovement;
-    }
-
-    public Point getAttackRange() {
-        return attackRange;
     }
 
     public String getImage() {
@@ -72,4 +56,11 @@ public class Maceman implements Unit  {
     public String getSide() {
         return side;
     }
+    public int[][] getDirections() {
+        return direction;
+    }
+    public int getStrength() {
+        return strength;
+    }
+
 }

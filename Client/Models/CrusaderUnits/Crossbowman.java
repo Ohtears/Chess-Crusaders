@@ -22,7 +22,7 @@ public class Crossbowman implements Unit  {
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
         this.image = "Client\\Assets\\Images\\CrusaderUnits\\Crossbowman.png";
-        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\Crossbowman\\Cross_s1.wav";
+        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\Crossbowman\\Cross_s1a.wav";
         this.side = "Crusader";
 
     }

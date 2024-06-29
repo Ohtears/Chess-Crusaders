@@ -22,7 +22,7 @@ public class Ranger implements Unit  {
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
         this.image = "Client\\Assets\\Images\\CrusaderUnits\\Ranger.png";
-        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\Ranger\\Arch_m1.wav";
+        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\Ranger\\Arch_m1a.wav";
         this.side = "Crusader";
 
     }

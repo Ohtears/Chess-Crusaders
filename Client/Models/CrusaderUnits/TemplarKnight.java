@@ -21,7 +21,7 @@ public class TemplarKnight implements Unit {
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
         this.image = "Client\\Assets\\Images\\CrusaderUnits\\TemplarKnight.png";
-        this.sound = "A.wav";
+        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\TemplarKnight\\Knight_s4.wav";
         this.side = "Crusader";
 
     }

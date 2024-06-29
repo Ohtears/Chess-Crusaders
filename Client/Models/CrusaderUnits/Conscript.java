@@ -21,7 +21,7 @@ public class Conscript implements Unit  {
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1}};
         this.rangemovement = 1;
         this.image = "Client\\Assets\\Images\\CrusaderUnits\\Conscript.png";
-        this.sound = "A.wav";
+        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\Conscript\\Pike_S1.wav";
         this.side = "Crusader";
 
     }

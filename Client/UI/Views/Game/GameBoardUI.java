@@ -28,7 +28,6 @@ public class GameBoardUI extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
 
-        // Set the background image
         ImageIcon backgroundImage = new ImageIcon("Client/Assets/Images/GameBoard/gameboard.png");
         JLabel backgroundLabel = new JLabel(backgroundImage);
 

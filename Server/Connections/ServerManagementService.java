@@ -2,14 +2,21 @@ package Server.Connections;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerManagementService {
     private static final int MANAGEMENT_PORT = 12346;
+    private static final List<String> activeServers = new ArrayList<>();
 
     public static void main(String[] args) {
         System.out.println("Server Management Service started...");
 
-        try (ServerSocket managementSocket = new ServerSocket(MANAGEMENT_PORT)) {
+        try {
+            InetAddress localAddress = InetAddress.getByName("localhost");
+            @SuppressWarnings("resource")
+            ServerSocket managementSocket = new ServerSocket(MANAGEMENT_PORT, 50, localAddress);
+
             while (true) {
                 Socket clientSocket = managementSocket.accept();
                 new Thread(new ServerCreationHandler(clientSocket)).start();
@@ -34,6 +41,7 @@ public class ServerManagementService {
                 String serverName = in.readLine();
                 if (serverName != null) {
                     System.out.println("Received request to create server: " + serverName);
+                    activeServers.add(serverName);
                     startNewServer(serverName);
                     out.println("Server created: " + serverName);
                 } else {
@@ -51,11 +59,11 @@ public class ServerManagementService {
         }
 
         private void startNewServer(String serverName) {
-            try {
-                new Thread(() -> GameServer.main(new String[]{serverName})).start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            new Thread(() -> GameServer.main(new String[]{serverName})).start();
         }
+    }
+
+    public static List<String> getActiveServers() {
+        return activeServers;
     }
 }

@@ -23,7 +23,8 @@ public class GameBoardUI extends JFrame {
     private Unit selectedUnit;
     private int selectedX, selectedY;
 
-    public GameBoardUI() {
+    public GameBoardUI(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
         setTitle("Chess-Crusader");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
@@ -34,9 +35,6 @@ public class GameBoardUI extends JFrame {
         boardPanel = new JPanel(new GridLayout(8, 8));
         boardPanel.setOpaque(false);
         boardPanel.setPreferredSize(new Dimension(800, 800));
-
-        gameBoard = new GameBoard();
-        gameBoard.initializeBoard(LayoutGame.Layout.DEFAULT);
 
         addUnits();
 
@@ -195,6 +193,10 @@ public class GameBoardUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GameBoardUI());
+        SwingUtilities.invokeLater(() -> {
+            GameBoard gameBoard = new GameBoard();
+            gameBoard.initializeBoard(LayoutGame.Layout.DEFAULT);
+            new GameBoardUI(gameBoard);
+        });
     }
 }

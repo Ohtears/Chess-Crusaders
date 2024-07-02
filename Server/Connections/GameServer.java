@@ -4,50 +4,36 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class GameServer {
-    private static final int PORT = 12345;
-    private static final int BROADCAST_PORT = 9876;
-    private static final String BROADCAST_MESSAGE = "GameServer:";
+import Client.Controllers.GameBoard;
+import Client.Models.LayoutGame;;
 
-    private static List<ClientHandler> clients = new ArrayList<>();
+public class GameServer {
+    private static final int GAME_PORT = 12345;
+    private static final Map<Socket, PrintWriter> clientOutputs = new HashMap<>();
     private static String serverName;
+    private static GameBoard gameBoard;
 
     public static void main(String[] args) {
-        serverName = args.length > 0 ? args[0] : "Default Server";
-        System.out.println("Starting server: " + serverName);
+        serverName = args[0];
+        System.out.println("Game Server \"" + serverName + "\" started...");
 
-        new Thread(GameServer::broadcastServer).start();
+        gameBoard = new GameBoard();
+        gameBoard.initializeBoard(LayoutGame.Layout.DEFAULT);
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+        try (ServerSocket serverSocket = new ServerSocket(GAME_PORT)) {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                ClientHandler clientHandler = new ClientHandler(clientSocket);
-                clients.add(clientHandler);
-                new Thread(clientHandler).start();
+                new Thread(new ClientHandler(clientSocket)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void broadcastServer() {
-        try (DatagramSocket socket = new DatagramSocket()) {
-            byte[] buffer = (BROADCAST_MESSAGE + serverName).getBytes();
-            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("255.255.255.255"), BROADCAST_PORT);
-            while (true) {
-                socket.send(packet);
-                System.out.println("Broadcasting server presence: " + serverName);
-                Thread.sleep(5000); 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     static class ClientHandler implements Runnable {
         private Socket socket;
-        private BufferedReader in;
         private PrintWriter out;
+        private BufferedReader in;
 
         public ClientHandler(Socket socket) {
             this.socket = socket;
@@ -56,12 +42,15 @@ public class GameServer {
         @Override
         public void run() {
             try {
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                clientOutputs.put(socket, out);
+
+                sendInitialGameState(out);
+
                 String message;
                 while ((message = in.readLine()) != null) {
-                    System.out.println("Received: " + message);
-                    // Handle messages from clients
+                    processClientMessage(message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -71,6 +60,28 @@ public class GameServer {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                clientOutputs.remove(socket);
+            }
+        }
+
+        private void sendInitialGameState(PrintWriter out) {
+            // Send the initial game state to the client
+            // For example, serialize the gameBoard and send it
+            // You need to implement the serialization and deserialization logic
+            // out.println(serializeGameBoard(gameBoard));
+        }
+
+        private void processClientMessage(String message) {
+            // Process messages from clients, update game state, and broadcast updates
+            // For example, move a unit based on client input
+            // Update game state and broadcast the new state
+            // broadcastMessage(serializeGameBoard(gameBoard));
+        }
+
+        @SuppressWarnings("unused")
+        private void broadcastMessage(String message) {
+            for (PrintWriter writer : clientOutputs.values()) {
+                writer.println(message);
             }
         }
     }

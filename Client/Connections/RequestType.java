@@ -1,5 +1,9 @@
 package Client.Connections;
 
-public class RequestType {
+public enum RequestType {
     
+    CREATESERVER,
+    JOINSERVER,
+    GAMESTATE,
+
 }

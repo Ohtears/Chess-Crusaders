@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.*;
 
 public class GameServer {
-    private static final int PORT = 12345;
     private static final int BROADCAST_PORT = 9876;
     private static final String BROADCAST_MESSAGE = "GameServer:";
 
@@ -14,11 +13,13 @@ public class GameServer {
 
     public static void main(String[] args) {
         serverName = args.length > 0 ? args[0] : "Default Server";
-        System.out.println("Starting server: " + serverName);
+        int port = args.length > 1 ? Integer.parseInt(args[1]) : 12345; // Default 
 
-        new Thread(GameServer::broadcastServer).start();
+        System.out.println("Starting server: " + serverName + " on port: " + port);
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+        new Thread(() -> broadcastServer(port)).start();
+
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
@@ -30,14 +31,14 @@ public class GameServer {
         }
     }
 
-    private static void broadcastServer() {
+    private static void broadcastServer(int port) {
         try (DatagramSocket socket = new DatagramSocket()) {
-            byte[] buffer = (BROADCAST_MESSAGE + serverName).getBytes();
+            byte[] buffer = (BROADCAST_MESSAGE + serverName + " - /" + port).getBytes();
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("255.255.255.255"), BROADCAST_PORT);
             while (true) {
                 socket.send(packet);
-                System.out.println("Broadcasting server presence: " + serverName);
-                Thread.sleep(5000); 
+                System.out.println("Broadcasting server presence: " + serverName + " on port: " + port);
+                Thread.sleep(5000);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +62,12 @@ public class GameServer {
                 String message;
                 while ((message = in.readLine()) != null) {
                     System.out.println("Received: " + message);
-                    // Handle messages from clients
+
+                    if (message.equals("CreateServer")){
+
+                
+                    }
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();

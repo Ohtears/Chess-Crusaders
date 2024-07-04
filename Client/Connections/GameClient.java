@@ -31,13 +31,15 @@ public class GameClient {
                 case CREATELOBBY:
                     stringRequest = createLobby();
                     break;
-                case JOINSERVER:
+                case JOINLOBBY:
                     stringRequest = joinLobby();
                     break;
                 case CREATESERVER:
                     break;
                 case GAMESTATE:
                     break;
+                case JOINSERVER:
+                break;
                 default:
                     break;
     

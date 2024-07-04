@@ -57,7 +57,7 @@ public class JsonConvertor {
         JSONObject playerjson = new JSONObject();
 
         playerjson.put("userId", player.getUserId());
-        playerjson.put("playername", player.getUsername());
+        playerjson.put("username", player.getUsername());
         playerjson.put("role", player.getRole());
 
         playersarray.put(playerjson);
@@ -83,7 +83,7 @@ public class JsonConvertor {
         JSONObject playerjson = new JSONObject();
 
         playerjson.put("userId", player.getUserId());
-        playerjson.put("playername", player.getUsername());
+        playerjson.put("username", player.getUsername());
         playerjson.put("role", player.getRole());
 
         playersarray.put(playerjson);

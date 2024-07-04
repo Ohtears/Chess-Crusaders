@@ -54,8 +54,8 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                 System.out.println("Joining server: " + selectedServer);
                 new Thread(() -> {
                     String[] parts = selectedServer.split(" - /");
-                    String serverAddress = parts[1].trim();
-                    int port = Integer.parseInt(parts[2].trim());
+                    String serverAddress = parts[2].trim();
+                    int port = Integer.parseInt(parts[1].trim());
                     System.out.println(serverAddress + ":" + port);
 
                     String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
@@ -82,10 +82,10 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                         GameClient client = new GameClient("192.168.1.5", port, player1);
                         client.connectToServer(RequestType.CREATELOBBY);
 
-                        switchPanel(new Lobby(), "Lobby");
                         // new GameBoardUI();
                     }
                 }).start();
+                switchPanel(new Lobby(), "Lobby");
             }
         });
 

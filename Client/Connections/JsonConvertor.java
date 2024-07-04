@@ -1,9 +1,5 @@
 package Client.Connections;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -67,7 +63,7 @@ public class JsonConvertor {
         playersarray.put(playerjson);
         
 
-        Lobby.put("player1", playersarray);
+        Lobby.put("player", playersarray);
 
         return Lobby;
 
@@ -93,7 +89,7 @@ public class JsonConvertor {
         playersarray.put(playerjson);
     
 
-        Lobby.put("player2", playersarray);
+        Lobby.put("player", playersarray);
 
         return Lobby;
 

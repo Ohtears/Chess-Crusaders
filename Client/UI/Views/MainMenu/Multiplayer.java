@@ -2,8 +2,8 @@ package Client.UI.Views.MainMenu;
 
 import Client.Connections.ClientDiscovery;
 import Client.Connections.GameClient;
+import Client.UI.Views.Lobby;
 import Client.UI.Views.PanelSwitcher;
-import Client.UI.Views.Game.Lobby;
 
 import javax.swing.*;
 import java.awt.*;
@@ -124,7 +124,7 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
     @Override
     public void switchPanel(JPanel panel, String Constraint) {
         discoveryThread.stopDiscovery();
-        
+
         MainFrame.mainPanel.removeAll();
         MainFrame.mainPanel.add(panel, Constraint);
         MainFrame.mainPanel.revalidate();

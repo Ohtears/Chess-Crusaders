@@ -20,7 +20,7 @@ public class GameClient {
         this.player = player;
     }
 
-    public void connectToServer(RequestType requestType) {
+    public String connectToServer(RequestType requestType) {
         try (Socket socket = new Socket(serverAddress, port);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
@@ -49,9 +49,11 @@ public class GameClient {
             String response = in.readLine();
             System.out.println("Server response: " + response);
 
+            return response;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private String createLobby(){

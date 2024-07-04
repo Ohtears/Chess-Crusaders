@@ -14,9 +14,10 @@ import java.util.List;
 public class Lobby extends JPanel {
 
     private BufferedImage backgroundImg, playerListImg, boardImg, boardFrameImg, layoutListImg, modifiersImg, playerPanel;
+    private List<User> playersinlby;
 
-    public Lobby() {
-
+    public Lobby(List<User> playersinlby) {
+        this.playersinlby = playersinlby;
         this.setPreferredSize(new Dimension(960, 540));
         this.setLayout(null);
 
@@ -42,8 +43,8 @@ public class Lobby extends JPanel {
         // // colorPanel.add(colorPicker);
         // this.add(colorPanel);
 
-        JPanel playerpnl = new JPanel();
-        playerpnl.setBounds(49, 219, 312, 30);
+        // JPanel playerpnl = new JPanel();
+        // playerpnl.setBounds(49, 219, 312, 30);
 
         // JLabel player = new JLabel(Player.getUsername());
         // playerpnl.add(player);
@@ -53,6 +54,8 @@ public class Lobby extends JPanel {
         playerListPanel.setBounds(29, 180, 478, 341);
         
         this.add(playerListPanel);
+
+        addPlayerPanels(playerListPanel);
 
 
         JPanel boardPanel = createImagePanel(boardImg, 0.88f, 219, 218);
@@ -80,7 +83,19 @@ public class Lobby extends JPanel {
         this.add(modifiersPanel);
 
     }
+    private void addPlayerPanels(JPanel playerListPanel) {
+        for (User player : playersinlby) {
+            JPanel playerPanel = new JPanel();
+            playerPanel.setPreferredSize(new Dimension(458, 50)); 
+            playerPanel.setBackground(Color.WHITE); 
+            playerPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK)); 
 
+            JLabel playerLabel = new JLabel(player.getUsername());
+            playerPanel.add(playerLabel);
+
+            playerListPanel.add(playerPanel);
+        }
+    }
     private JPanel createImagePanel(BufferedImage image, float opacity, int width, int height) {
         return new JPanel() {
             @Override
@@ -114,7 +129,7 @@ public class Lobby extends JPanel {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new Lobby());
+        frame.add(new Lobby(null));
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

@@ -49,6 +49,8 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
 
 
         joinServerButton.addActionListener(e -> {
+            List <User> players = new ArrayList<>();
+
             String selectedServer = serverList.getSelectedValue();
             if (selectedServer != null) {
                 System.out.println("Joining server: " + selectedServer);
@@ -62,7 +64,12 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     User player2 = new User(2, playerName, "Muslim");
 
                     GameClient client = new GameClient(serverAddress, port, player2);
-                    client.connectToServer(RequestType.JOINLOBBY);
+                    String opponentString = client.connectToServer(RequestType.JOINLOBBY);
+                    User player1 = new User(1, opponentString, "Crusader");
+                    players.add(player1);
+                    
+                    switchPanel(new Lobby(players), "Lobby");
+
                 }).start();
             } else {
                 System.out.println("No server selected");
@@ -70,6 +77,8 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
         });
 
         createServerButton.addActionListener(e -> {
+            List <User> players = new ArrayList<>();
+
             String serverName = JOptionPane.showInputDialog(this, "Enter server name:");
             if (serverName != null && !serverName.trim().isEmpty()) {
                 new Thread(() -> {
@@ -78,14 +87,16 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                         
                         String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
                         User player1 = new User(1, playerName, "Crusader");
-
+                        players.add(player1);
                         GameClient client = new GameClient("192.168.1.5", port, player1);
-                        client.connectToServer(RequestType.CREATELOBBY);
+                        String opponent_username = client.connectToServer(RequestType.CREATELOBBY);
+                        User player2 = new User(2, opponent_username, "Muslim");
+                        players.add(player2);
+                        switchPanel(new Lobby(players), "Lobby");
 
-                        // new GameBoardUI();
                     }
                 }).start();
-                switchPanel(new Lobby(), "Lobby");
+                switchPanel(new Lobby(players), "Lobby");
             }
         });
 

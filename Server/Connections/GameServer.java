@@ -92,7 +92,8 @@ public class GameServer {
                                     lobby.setPlayer(client);
                                     ClientHandler creatorHandler = lobbyCreatorHandlers.get(port);
                                     if (creatorHandler != null) {
-                                        creatorHandler.out.println("Player joined your lobby: " + client.getUsername());
+                                        creatorHandler.out.println(client.getUsername());
+                                        out.println(lobby.getplayer1().getUsername());
                                     }
                                 }
                                 

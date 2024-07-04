@@ -30,4 +30,8 @@ public class LobbyInstance {
 
     }
 
+    public User getplayer1(){
+        return players.get(0);
+    }
+
 }

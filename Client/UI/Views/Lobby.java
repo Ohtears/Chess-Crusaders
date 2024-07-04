@@ -1,17 +1,22 @@
 package Client.UI.Views;
 
 import javax.swing.*;
+
+import Client.Models.User;
+
 import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.List;
 public class Lobby extends JPanel {
 
     private BufferedImage backgroundImg, playerListImg, boardImg, boardFrameImg, layoutListImg, modifiersImg, playerPanel;
 
     public Lobby() {
+
         this.setPreferredSize(new Dimension(960, 540));
         this.setLayout(null);
 
@@ -28,14 +33,21 @@ public class Lobby extends JPanel {
             e.printStackTrace();
         }
 
-        JPanel colorPanel = createImagePanel(playerPanel, 0.97f, 312, 30);
-        colorPanel.setBounds(49, 219, 312, 30);
-        // JLabel colorPicker = new JLabel();
-        // colorPicker.setOpaque(true);
-        // colorPicker.setBackground(Color.GREEN); 
-        // colorPicker.setBounds(288, 222, 18, 18);
-        // colorPanel.add(colorPicker);
-        this.add(colorPanel);
+        // JPanel colorPanel = createImagePanel(playerPanel, 0.97f, 312, 30);
+        // colorPanel.setBounds(49, 219, 312, 30);
+        // // JLabel colorPicker = new JLabel();
+        // // colorPicker.setOpaque(true);
+        // // colorPicker.setBackground(Color.GREEN); 
+        // // colorPicker.setBounds(288, 222, 18, 18);
+        // // colorPanel.add(colorPicker);
+        // this.add(colorPanel);
+
+        JPanel playerpnl = new JPanel();
+        playerpnl.setBounds(49, 219, 312, 30);
+
+        // JLabel player = new JLabel(Player.getUsername());
+        // playerpnl.add(player);
+        // this.add(playerpnl);
 
         JPanel playerListPanel = createImagePanel(playerListImg, 0.95f, 478, 341);
         playerListPanel.setBounds(29, 180, 478, 341);
@@ -54,6 +66,14 @@ public class Lobby extends JPanel {
         JPanel layoutListPanel = createImagePanel(layoutListImg, 0.95f, 265, 189);
         layoutListPanel.setBounds(681, 270, 265, 189);
         this.add(layoutListPanel);
+
+        JButton startGameButton = new JButton("Start Game");
+        startGameButton.setBounds(720, 470, 150, 30);
+        startGameButton.addActionListener(e -> {
+
+
+        });
+        this.add(startGameButton);
 
         JPanel modifiersPanel = createImagePanel(modifiersImg, 0.95f, 201, 143);
         modifiersPanel.setBounds(29, 9, 201, 143);
@@ -84,6 +104,12 @@ public class Lobby extends JPanel {
         super.paintComponent(g);
         g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
     }
+
+    // private void setPlayer(User user){
+
+    //     players.add(user);
+
+    // }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();

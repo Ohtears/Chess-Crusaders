@@ -2,6 +2,8 @@ package Client.UI.Views.MainMenu;
 
 import Client.Connections.ClientDiscovery;
 import Client.Connections.GameClient;
+import Client.Connections.RequestType;
+import Client.Models.User;
 import Client.UI.Views.Lobby;
 import Client.UI.Views.PanelSwitcher;
 
@@ -55,8 +57,12 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     String serverAddress = parts[1].trim();
                     int port = Integer.parseInt(parts[2].trim());
                     System.out.println(serverAddress + ":" + port);
-                    GameClient client = new GameClient(serverAddress, port);
-                    client.connectToServer();
+
+                    String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
+                    User player2 = new User(2, playerName, "Muslim");
+
+                    GameClient client = new GameClient(serverAddress, port, player2);
+                    client.connectToServer(RequestType.JOINLOBBY);
                 }).start();
             } else {
                 System.out.println("No server selected");
@@ -69,10 +75,15 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                 new Thread(() -> {
                     int port = requestServerCreation(serverName);
                     if (port != -1) {
-                        GameClient client = new GameClient("192.168.1.5", port);
+                        
+                        String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
+                        User player1 = new User(1, playerName, "Crusader");
+
+                        GameClient client = new GameClient("192.168.1.5", port, player1);
+                        client.connectToServer(RequestType.CREATELOBBY);
+
                         switchPanel(new Lobby(), "Lobby");
                         // new GameBoardUI();
-                        client.connectToServer();
                     }
                 }).start();
             }

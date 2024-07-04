@@ -1,11 +1,16 @@
 package Client.Connections;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import Client.Controllers.GameBoard;
 import Client.Models.Tile;
 import Client.Models.Unit;
+import Client.Models.User;
 public class JsonConvertor {
     
     public static JSONObject createGameStateJSON() {
@@ -40,5 +45,60 @@ public class JsonConvertor {
         unitJSON.put("type", unit.getName()); 
         return unitJSON;
     }
+
+
+
+    public static JSONObject createLobby(int port, User player){
+
+        JSONObject Lobby = new JSONObject();
+
+        Lobby.put("RequestType", RequestType.CREATELOBBY);
+
+        Lobby.put("lobbyPort", port);
+
+        JSONArray playersarray = new JSONArray();
+
+        JSONObject playerjson = new JSONObject();
+
+        playerjson.put("userId", player.getUserId());
+        playerjson.put("playername", player.getUsername());
+        playerjson.put("role", player.getRole());
+
+        playersarray.put(playerjson);
+        
+
+        Lobby.put("player1", playersarray);
+
+        return Lobby;
+
+    }
+
+    public static JSONObject joinLobby(int port, User player){
+
+        JSONObject Lobby = new JSONObject();
+
+        Lobby.put("RequestType", RequestType.JOINLOBBY);
+
+        Lobby.put("lobbyPort", port);
+
+        JSONArray playersarray = new JSONArray();
+
+
+        JSONObject playerjson = new JSONObject();
+
+        playerjson.put("userId", player.getUserId());
+        playerjson.put("playername", player.getUsername());
+        playerjson.put("role", player.getRole());
+
+        playersarray.put(playerjson);
+    
+
+        Lobby.put("player2", playersarray);
+
+        return Lobby;
+
+    }
+
+    
 
 }

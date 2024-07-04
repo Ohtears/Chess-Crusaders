@@ -1,11 +1,10 @@
-package Client.Connections;
+package Server.Connections;
 
 public enum RequestType {
-    
+        
     CREATESERVER,
     JOINSERVER,
     GAMESTATE,
     CREATELOBBY,
     JOINLOBBY,
-
 }

@@ -7,16 +7,18 @@ import javax.swing.DefaultListModel;
 public class ClientDiscovery {
     private static final int BROADCAST_PORT = 9876;
     private DefaultListModel<String> serverListModel;
+    private volatile boolean running; 
 
     public ClientDiscovery(DefaultListModel<String> serverListModel) {
         this.serverListModel = serverListModel;
+        this.running = true; 
     }
 
     public void discoverServers() {
         try (DatagramSocket socket = new DatagramSocket(BROADCAST_PORT)) {
             byte[] buffer = new byte[256];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-            while (true) {
+            while (running) { 
                 socket.receive(packet);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 if (received.startsWith("GameServer:")) {
@@ -31,5 +33,9 @@ public class ClientDiscovery {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void stopDiscovery() {
+        running = false; 
     }
 }

@@ -4,28 +4,48 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import Client.Controllers.GameBoard;
-import Client.Models.LayoutGame;;
+import org.json.JSONObject;
+
+import Server.Models.Client;
+import Server.Models.LobbyInstance;
 
 public class GameServer {
-    private static final int GAME_PORT = 12345;
-    private static final Map<Socket, PrintWriter> clientOutputs = new HashMap<>();
+    private static final int BROADCAST_PORT = 9876;
+    private static final String BROADCAST_MESSAGE = "GameServer:";
+
+    private static List<ClientHandler> clients = new ArrayList<>();
     private static String serverName;
-    private static GameBoard gameBoard;
+    private static List<LobbyInstance> lobbyInstances = new ArrayList<>();
+    private static Map<Integer, ClientHandler> lobbyCreatorHandlers = new HashMap<>();
 
     public static void main(String[] args) {
-        serverName = args[0];
-        System.out.println("Game Server \"" + serverName + "\" started...");
+        serverName = args.length > 0 ? args[0] : "Default Server";
+        int port = args.length > 1 ? Integer.parseInt(args[1]) : 12345; // Default 
 
-        gameBoard = new GameBoard();
-        gameBoard.initializeBoard(LayoutGame.Layout.DEFAULT);
+        System.out.println("Starting server: " + serverName + " on port: " + port);
 
-        try (ServerSocket serverSocket = new ServerSocket(GAME_PORT)) {
+        new Thread(() -> broadcastServer(port)).start();
+
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 new Thread(new ClientHandler(clientSocket)).start();
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void broadcastServer(int port) {
+        try (DatagramSocket socket = new DatagramSocket()) {
+            byte[] buffer = (BROADCAST_MESSAGE + serverName + " - /" + port).getBytes();
+            DatagramPacket packet = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("255.255.255.255"), BROADCAST_PORT);
+            while (true) {
+                socket.send(packet);
+                System.out.println("Broadcasting server presence: " + serverName + " on port: " + port);
+                Thread.sleep(5000);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -44,13 +64,49 @@ public class GameServer {
             try {
                 out = new PrintWriter(socket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                clientOutputs.put(socket, out);
+                out = new PrintWriter(socket.getOutputStream(), true);
+                String requestPayloadString;
+                while ((requestPayloadString = in.readLine()) != null) {
+                    System.out.println("Received: " + requestPayloadString);
+                    
+                    JSONObject jsonPayload = new JSONObject(requestPayloadString);
+                    RequestType request = JsonConvertor.JsonParserRequest(jsonPayload); 
 
-                sendInitialGameState(out);
+                    switch (request){
+                        case CREATELOBBY:
+                        
+                            LobbyInstance lobbyinst = JsonConvertor.JsonParser(jsonPayload);
+                            lobbyInstances.add(lobbyinst);
+                            lobbyCreatorHandlers.put(lobbyinst.getport(), this);
 
-                String message;
-                while ((message = in.readLine()) != null) {
-                    processClientMessage(message);
+                            break;
+                        case JOINLOBBY:
+                            Client client = JsonConvertor.JsonParserClient(jsonPayload);
+
+                            for (LobbyInstance lobby: lobbyInstances){
+
+                                int port = lobby.getport();
+                                if (port == client.getport()){
+
+                                    lobby.setPlayer(client);
+                                    ClientHandler creatorHandler = lobbyCreatorHandlers.get(port);
+                                    if (creatorHandler != null) {
+                                        creatorHandler.out.println("Player joined your lobby: " + client.getUsername());
+                                    }
+                                }
+                                
+                            }
+                        case CREATESERVER:
+                            break;
+                        case GAMESTATE:
+                            break;
+                        case JOINSERVER:
+                            break;
+                        default:
+                            break;
+                        
+                    }
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();

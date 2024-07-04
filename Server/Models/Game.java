@@ -1,4 +1,6 @@
-package Client.Models;
+package Server.Models;
+
+import Client.Models.User;
 
 public class Game {
     

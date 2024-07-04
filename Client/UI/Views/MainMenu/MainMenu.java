@@ -6,36 +6,15 @@ import Client.UI.Views.PanelSwitcher;
 
 import java.awt.*;
 
-public class MainMenu extends JFrame implements PanelSwitcher {
-
-    private JPanel mainPanel;
+public class MainMenu extends JPanel implements PanelSwitcher {
 
     public MainMenu() {
-        setTitle("Main Menu");
-        setSize(960, 540);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
-
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new CardLayout());
-        add(mainPanel);
-
-        JPanel menuPanel = createMenuPanel();
-        mainPanel.add(menuPanel, "Main Menu");
-
-        setVisible(true);
-    }
-
-    private JPanel createMenuPanel() {
-        JPanel menuPanel = new JPanel();
-        menuPanel.setLayout(null);
 
         ImageIcon imageIcon = new ImageIcon("Client\\Assets\\Images\\Mis\\loading_screen_wallpaper.jpg");
         Image image = imageIcon.getImage().getScaledInstance(960, 540, Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(image));
         background.setBounds(0, 0, 960, 540);
-        menuPanel.add(background);
+        add(background);
 
         JButton singleplayerButton = new JButton("Singleplayer");
         JButton multiplayerButton = new JButton("Multiplayer");
@@ -60,20 +39,17 @@ public class MainMenu extends JFrame implements PanelSwitcher {
         background.add(multiplayerButton);
         background.add(settingsButton);
         background.add(quitButton);
-
-        return menuPanel;
     }
 
     private void switchToMultiplayer() {
         Multiplayer multiplayerPanel = new Multiplayer();
-        switchPanel(multiplayerPanel);
+        switchPanel(multiplayerPanel, "Multiplayer");
     }
-
     @Override
-    public void switchPanel(JPanel panel) {
-        mainPanel.add(panel, "Multiplayer");
-        CardLayout layout = (CardLayout) mainPanel.getLayout();
-        layout.show(mainPanel, "Multiplayer");
+    public void switchPanel(JPanel panel, String Constraint) {
+        MainFrame.mainPanel.add(panel, Constraint);
+        CardLayout layout = (CardLayout) MainFrame.mainPanel.getLayout();
+        layout.show(MainFrame.mainPanel, Constraint);
     }
 
     public static void main(String[] args) {

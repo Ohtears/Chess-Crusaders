@@ -1,5 +1,12 @@
 package Client.UI.Views.MainMenu;
 
+import Client.Connections.ClientDiscovery;
+import Client.Connections.GameClient;
+import Client.Connections.RequestType;
+import Client.Models.User;
+import Client.UI.Views.Lobby;
+import Client.UI.Views.PanelSwitcher;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,11 +18,12 @@ import Client.Controllers.GameBoard;
 import Client.UI.Views.Game.GameBoardUI;
 import Client.Models.LayoutGame;
 
-public class Multiplayer extends JPanel {
+public class Multiplayer extends JPanel implements PanelSwitcher {
+    @SuppressWarnings("unused")
+    private List<String> availableServers = new ArrayList<>();
     private DefaultListModel<String> serverListModel = new DefaultListModel<>();
-    private JList<String> serverList = new JList<>(serverListModel);
-    private JButton joinServerButton = new JButton("Join Server");
-    private JButton createServerButton = new JButton("Create Server");
+    private JList<String> serverList;
+    private ClientDiscovery discoveryThread;
 
     public Multiplayer() {
 
@@ -25,101 +33,118 @@ public class Multiplayer extends JPanel {
         background.setBounds(0, 0, 960, 540);
         add(background);
 
-        serverList.setBounds(30, 100, 300, 300);
-        joinServerButton.setBounds(350, 100, 150, 40);
-        createServerButton.setBounds(350, 160, 150, 40);
+        serverList = new JList<>(serverListModel);
+        serverList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        serverList.setBounds(200, 50, 560, 300);
+        JScrollPane scrollPane = new JScrollPane(serverList);
+        scrollPane.setBounds(200, 50, 560, 300);
+        add(scrollPane);
 
-        joinServerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedServer = serverList.getSelectedValue();
-                if (selectedServer != null) {
-                    joinServer(selectedServer);
-                }
+        JButton addServerButton = new JButton("Add Server");
+        JButton createServerButton = new JButton("Create Server");
+        JButton joinServerButton = new JButton("Join Server");
+        JButton backButton = new JButton("Back to Main Menu"); 
+
+
+        addServerButton.setBounds(200, 370, 150, 40);
+        createServerButton.setBounds(380, 370, 150, 40);
+        joinServerButton.setBounds(560, 370, 150, 40);
+        backButton.setBounds(30, 370, 150, 40); 
+
+
+        joinServerButton.addActionListener(e -> {
+            String selectedServer = serverList.getSelectedValue();
+            if (selectedServer != null) {
+                System.out.println("Joining server: " + selectedServer);
+                new Thread(() -> {
+                    String[] parts = selectedServer.split(" - /");
+                    String serverAddress = parts[1].trim();
+                    int port = Integer.parseInt(parts[2].trim());
+                    System.out.println(serverAddress + ":" + port);
+
+                    String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
+                    User player2 = new User(2, playerName, "Muslim");
+
+                    GameClient client = new GameClient(serverAddress, port, player2);
+                    client.connectToServer(RequestType.JOINLOBBY);
+                }).start();
+            } else {
+                System.out.println("No server selected");
             }
         });
 
-        createServerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String serverName = JOptionPane.showInputDialog("Enter server name:");
-                if (serverName != null && !serverName.trim().isEmpty()) {
-                    createServer(serverName);
-                }
+        createServerButton.addActionListener(e -> {
+            String serverName = JOptionPane.showInputDialog(this, "Enter server name:");
+            if (serverName != null && !serverName.trim().isEmpty()) {
+                new Thread(() -> {
+                    int port = requestServerCreation(serverName);
+                    if (port != -1) {
+                        
+                        String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
+                        User player1 = new User(1, playerName, "Crusader");
+
+                        GameClient client = new GameClient("192.168.1.5", port, player1);
+                        client.connectToServer(RequestType.CREATELOBBY);
+
+                        switchPanel(new Lobby(), "Lobby");
+                        // new GameBoardUI();
+                    }
+                }).start();
             }
+        });
+
+        backButton.addActionListener(e -> {
+
+            switchPanel(new MainMenu(), "MainMenu");
         });
 
         background.setLayout(null);
         background.add(new JScrollPane(serverList));
         background.add(joinServerButton);
         background.add(createServerButton);
+        background.add(joinServerButton);
+        background.add(backButton);
 
-        setVisible(true);
+        discoveryThread = new ClientDiscovery(serverListModel);
+        createDiscovery();
 
-        new Thread(this::discoverServers).start();
     }
-
-    private void joinServer(String serverName) {
+    private void createDiscovery() {
         new Thread(() -> {
-            try (Socket socket = new Socket("localhost", 12345);
-                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-
-                // Here you can send/receive messages to/from the game server
-                GameBoard gameBoard = new GameBoard();
-                gameBoard.initializeBoard(LayoutGame.Layout.DEFAULT);
-                new GameBoardUI(gameBoard);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            discoveryThread.discoverServers();
         }).start();
     }
 
-    private void createServer(String serverName) {
-        new Thread(() -> {
-            String managementServerAddress = "localhost"; 
-            int managementServerPort = 12346;
+
+    private int requestServerCreation(String serverName) {
+        String managementServerAddress = "192.168.1.5";
+        int managementServerPort = 12346;
 
             try (Socket socket = new Socket(managementServerAddress, managementServerPort);
                  PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                  BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-                out.println(serverName);
-                String response = in.readLine();
-                System.out.println("Server creation response: " + response);
-
-                joinServer(serverName);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    private void discoverServers() {
-        try (DatagramSocket socket = new DatagramSocket(9876)) {
-            socket.setSoTimeout(5000);
-
-            while (true) {
-                byte[] buffer = new byte[1024];
-                DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-                socket.receive(packet);
-
-                String message = new String(packet.getData(), 0, packet.getLength());
-                if (message.startsWith("GameServer:")) {
-                    String serverName = message.substring("GameServer:".length());
-                    if (!serverListModel.contains(serverName)) {
-                        serverListModel.addElement(serverName);
-                    }
-                }
+            out.println(serverName);
+            String response = in.readLine();
+            System.out.println("Server creation response: " + response);
+            if (response.startsWith("Server created on port:")) {
+                return Integer.parseInt(response.split(": ")[1]);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return -1; 
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(Multiplayer::new);
+    @Override
+    public void switchPanel(JPanel panel, String Constraint) {
+        discoveryThread.stopDiscovery();
+
+        MainFrame.mainPanel.removeAll();
+        MainFrame.mainPanel.add(panel, Constraint);
+        MainFrame.mainPanel.revalidate();
+        MainFrame.mainPanel.repaint();
     }
+
+    
 }

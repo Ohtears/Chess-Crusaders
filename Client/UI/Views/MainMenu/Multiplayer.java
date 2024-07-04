@@ -50,6 +50,8 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
 
         joinServerButton.addActionListener(e -> {
             List <User> players = new ArrayList<>();
+            String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
+            User player2 = new User(2, playerName, "Muslim");
 
             String selectedServer = serverList.getSelectedValue();
             if (selectedServer != null) {
@@ -60,14 +62,13 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     int port = Integer.parseInt(parts[1].trim());
                     System.out.println(serverAddress + ":" + port);
 
-                    String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
-                    User player2 = new User(2, playerName, "Muslim");
-
+                    
                     GameClient client = new GameClient(serverAddress, port, player2);
                     String opponentString = client.connectToServer(RequestType.JOINLOBBY);
                     User player1 = new User(1, opponentString, "Crusader");
                     players.add(player1);
-                    
+                    players.add(player2);
+
                     switchPanel(new Lobby(players), "Lobby");
 
                 }).start();
@@ -78,6 +79,9 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
 
         createServerButton.addActionListener(e -> {
             List <User> players = new ArrayList<>();
+            String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
+            User player1 = new User(1, playerName, "Crusader");
+            players.add(player1);
 
             String serverName = JOptionPane.showInputDialog(this, "Enter server name:");
             if (serverName != null && !serverName.trim().isEmpty()) {
@@ -85,9 +89,6 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     int port = requestServerCreation(serverName);
                     if (port != -1) {
                         
-                        String playerName = JOptionPane.showInputDialog(this, "Enter your name:", "Player Name Input", JOptionPane.PLAIN_MESSAGE);
-                        User player1 = new User(1, playerName, "Crusader");
-                        players.add(player1);
                         GameClient client = new GameClient("192.168.1.5", port, player1);
                         String opponent_username = client.connectToServer(RequestType.CREATELOBBY);
                         User player2 = new User(2, opponent_username, "Muslim");

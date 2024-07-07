@@ -1,5 +1,6 @@
 package Client.Models.ArabUnits;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import Client.Models.Unit;
 
 public class HorseArcher implements Unit  {
@@ -20,8 +21,11 @@ public class HorseArcher implements Unit  {
         this.strength = 1;
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
-        this.image = "Client\\Assets\\Images\\ArabUnits\\HorseArcher.png";
-        this.sound = "Client\\Assets\\Audios\\ArabUnits\\HorseArcher\\milspeech_horsearch [19].wav";
+
+        Path path_image = Paths.get("Client", "Assets", "Images", "ArabUnits", "HorseArcher.png");
+        Path path_sound = Paths.get("Client", "Assets", "Audios", "ArabUnits", "HorseArcher", "milspeech_horsearch [19].wav");
+        this.image = path_image.toString();
+        this.sound = path_sound.toString();
         this.side = "Islamic";
 
     }

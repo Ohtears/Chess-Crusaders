@@ -9,6 +9,8 @@ import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 public class Lobby extends JPanel {
@@ -22,13 +24,22 @@ public class Lobby extends JPanel {
         this.setLayout(null);
 
         try {
-            backgroundImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\loading_screen_wallpaper.jpg"));
-            playerListImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\playerlist.png"));
-            boardImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\board1.png"));
-            boardFrameImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\frameborder.png"));
-            layoutListImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\borderlayout.png"));
-            modifiersImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\modifier.png"));
-            playerPanel = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\player.png"));
+
+            Path path_backgroundimage = Paths.get("Client", "Assets", "Images", "Mis", "loading_screen_wallpaper.jpg");
+            Path path_playerlist = Paths.get("Client", "Assets", "Images", "Mis", "playerlist.png");
+            Path path_board = Paths.get("Client", "Assets", "Images", "Mis", "board1.png");
+            Path path_boardframe = Paths.get("Client", "Assets", "Images", "Mis", "frameborder.png");
+            Path path_layoutlist = Paths.get("Client", "Assets", "Images", "Mis", "borderlayout.png");
+            Path path_modifiers = Paths.get("Client", "Assets", "Images", "Mis", "modifier.png");
+            Path path_playerpanel = Paths.get("Client", "Assets", "Images", "Mis", "player.png");
+            
+            backgroundImg = ImageIO.read(new File(path_backgroundimage.toString()));
+            playerListImg = ImageIO.read(new File(path_playerlist.toString()));
+            boardImg = ImageIO.read(new File(path_board.toString()));
+            boardFrameImg = ImageIO.read(new File(path_boardframe.toString()));
+            layoutListImg = ImageIO.read(new File(path_layoutlist.toString()));
+            modifiersImg = ImageIO.read(new File(path_modifiers.toString()));
+            playerPanel = ImageIO.read(new File(path_playerpanel.toString()));
 
         } catch (IOException e) {
             e.printStackTrace();

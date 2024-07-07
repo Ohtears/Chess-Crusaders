@@ -1,5 +1,6 @@
 package Client.Models.CrusaderUnits;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import Client.Models.Unit;
 
 public class Ranger implements Unit  {
@@ -21,8 +22,12 @@ public class Ranger implements Unit  {
         this.Strength = 10;
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
-        this.image = "Client\\Assets\\Images\\CrusaderUnits\\Ranger.png";
-        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\Ranger\\Arch_m1a.wav";
+
+        Path path_image = Paths.get("Client", "Assets", "Images", "CrusaderUnits", "Ranger.png");
+        Path path_sound = Paths.get("Client", "Assets", "Audios", "CrusaderUnits", "Ranger", "Arch_m1a.wav");
+
+        this.image = path_image.toString();
+        this.sound = path_sound.toString();
         this.side = "Crusader";
 
     }

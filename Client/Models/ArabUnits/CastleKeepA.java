@@ -1,5 +1,6 @@
 package Client.Models.ArabUnits;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import Client.Models.Unit;
 
 public class CastleKeepA implements Unit {
@@ -21,11 +22,13 @@ public class CastleKeepA implements Unit {
         this.strength = 1;
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
         this.rangemovement = 1;
-        this.image = "Client\\Assets\\Images\\GameBoard\\castlekeep.png";
-        this.sound = "A.wav";
-        this.side = "Islamic";
-    }
 
+        Path path_image = Paths.get("Client", "Assets", "Images", "GameBoard", "castlekeep.png");
+        Path path_sound = Paths.get("Client", "Assets", "Audios", "CastleKeep", "castlekeep.wav");
+        this.image = path_image.toString();
+        this.sound = path_sound.toString();
+    
+    }
     public String getName() {
         return name;
     }

@@ -1,5 +1,6 @@
 package Client.Models.CrusaderUnits;
-
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import Client.Models.Unit;
 
 public class Conscript implements Unit  {
@@ -20,8 +21,12 @@ public class Conscript implements Unit  {
         this.strength = 1;
         this.direction = new int[][]{{-1, 0}, {-1,-1}, {-1,1}};
         this.rangemovement = 1;
-        this.image = "Client\\Assets\\Images\\CrusaderUnits\\Conscript.png";
-        this.sound = "Client\\Assets\\Audios\\CrusaderUnits\\Conscript\\Pike_S1a.wav";
+
+        Path path_image = Paths.get("Client", "Assets", "Images", "CrusaderUnits", "Conscript.png");
+        Path path_sound = Paths.get("Client", "Assets", "Audios", "CrusaderUnits", "Conscript", "Pike_S1a.wav");
+
+        this.image = path_image.toString();
+        this.sound = path_sound.toString();
         this.side = "Crusader";
 
     }

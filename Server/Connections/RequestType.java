@@ -7,4 +7,5 @@ public enum RequestType {
     GAMESTATE,
     CREATELOBBY,
     JOINLOBBY,
+    STARTGAME
 }

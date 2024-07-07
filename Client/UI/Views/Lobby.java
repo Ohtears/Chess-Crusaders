@@ -3,6 +3,7 @@ package Client.UI.Views;
 import javax.swing.*;
 
 import Client.Models.User;
+import Client.UI.Views.Game.GameBoardUI;
 
 import java.awt.*;
 import java.awt.image.*;
@@ -17,6 +18,7 @@ public class Lobby extends JPanel {
 
     private BufferedImage backgroundImg, playerListImg, boardImg, boardFrameImg, layoutListImg, modifiersImg, playerPanel;
     private List<User> playersinlby;
+    private JButton startGameButton;
 
     public Lobby(List<User> playersinlby) {
         this.playersinlby = playersinlby;
@@ -81,9 +83,12 @@ public class Lobby extends JPanel {
         layoutListPanel.setBounds(681, 270, 265, 189);
         this.add(layoutListPanel);
 
-        JButton startGameButton = new JButton("Start Game");
+        startGameButton = new JButton("Start Game");
         startGameButton.setBounds(720, 470, 150, 30);
         startGameButton.addActionListener(e -> {
+
+
+            new GameBoardUI();
 
 
         });
@@ -131,11 +136,11 @@ public class Lobby extends JPanel {
         g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
     }
 
-    // private void setPlayer(User user){
 
-    //     players.add(user);
+    public JButton getStartButton(){
+        return startGameButton;
+    }
 
-    // }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();

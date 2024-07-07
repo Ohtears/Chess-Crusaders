@@ -69,7 +69,6 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     int port = Integer.parseInt(parts[1].trim());
                     System.out.println(serverAddress + ":" + port);
 
-                    
                     GameClient client = new GameClient(serverAddress, port, player2);
                     String opponentString = client.connectToServer(RequestType.JOINLOBBY);
                     User player1 = new User(1, opponentString, "Crusader");
@@ -77,6 +76,8 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     players.add(player2);
 
                     switchPanel(new Lobby(players), "Lobby");
+
+                    // String Isrun = client.connectToServer();
 
                 }).start();
             } else {
@@ -100,7 +101,15 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                         String opponent_username = client.connectToServer(RequestType.CREATELOBBY);
                         User player2 = new User(2, opponent_username, "Muslim");
                         players.add(player2);
-                        switchPanel(new Lobby(players), "Lobby");
+                        Lobby lobby= new Lobby(players);
+                        switchPanel(lobby, "Lobby");
+
+                        lobby.getStartButton().addActionListener(e1 -> {
+
+                            client.connectToServer(RequestType.STARTGAME);
+                            
+                        });
+                        
 
                     }
                 }).start();

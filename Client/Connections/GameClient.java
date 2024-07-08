@@ -45,7 +45,8 @@ public class GameClient {
                     break;
     
             }
-
+            
+            System.out.println("Sending request: " + stringRequest);
             out.println(stringRequest);
             String response = in.readLine();
             System.out.println("Server response: " + response);

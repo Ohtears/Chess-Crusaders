@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Multiplayer extends JPanel implements PanelSwitcher {
 
-    String serverIp = "192.168.1.5"; //127.0.0.1
+    String serverIp = "127.0.0.1"; //
 
     @SuppressWarnings("unused")
     private List<String> availableServers = new ArrayList<>();
@@ -77,13 +77,14 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     players.add(player2);
 
                     switchPanel(new Lobby(players), "Lobby");
-                    String request_status = client.connectToServer(RequestType.WAITGAME);
+                    // String request_status = client.connectToServer(RequestType.WAITGAME);
 
+                    
                     System.out.println("salam");
-                    if (request_status.equals("200")){
-                        MainFrame.instance.dispose();
-                        new GameBoardUI(player2);
-                    }
+                    // if (request_status.equals("200")){
+                    //     MainFrame.instance.dispose();
+                    //     new GameBoardUI(player2);
+                    // }
 
 
                 }).start();

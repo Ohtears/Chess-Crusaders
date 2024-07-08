@@ -118,6 +118,9 @@ public class GameServer {
 
                                     Game game = new Game(0, 0, crusaderplayer, muslimplayer, 0, 0);
                                     games.add(game);
+                                    System.out.println("ss");
+                                    System.out.println(participant);
+                                    System.out.println("ss");
 
                                     participant.out.println("200");
                                     out.println("200");

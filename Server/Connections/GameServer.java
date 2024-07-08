@@ -114,12 +114,12 @@ public class GameServer {
 
                                     User crusaderplayer = lobby.getplayer1();
                                     User muslimplayer = lobby.getplayer2();
-                                    ClientHandler participiant = clientHandlers.get(muslimplayer);
+                                    ClientHandler participant = clientHandlers.get(muslimplayer);
 
                                     Game game = new Game(0, 0, crusaderplayer, muslimplayer, 0, 0);
                                     games.add(game);
 
-                                    participiant.out.println("200");
+                                    participant.out.println("200");
                                     out.println("200");
 
                                 }

@@ -77,11 +77,10 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     players.add(player2);
 
                     switchPanel(new Lobby(players), "Lobby");
-
                     String request_status = client.connectToServer(RequestType.WAITGAME);
 
+                    System.out.println("salam");
                     if (request_status.equals("200")){
-                        
                         MainFrame.instance.dispose();
                         new GameBoardUI(player2);
                     }

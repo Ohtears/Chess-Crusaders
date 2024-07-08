@@ -10,6 +10,7 @@ public class Game {
     private User MuslimPlayer;
     private int CrusaderPlayerScore;
     private int MuslimPlayerScore;
+    private int port;
     
 
     public Game(int turn, int gameId, User CrusaderPlayer, User MuslimPlayer, int CrusaderPlayerScore, int MuslimPlayerScore) {

@@ -7,6 +7,7 @@ import java.util.*;
 import org.json.JSONObject;
 
 import Server.Models.Client;
+import Server.Models.Game;
 import Server.Models.LobbyInstance;
 
 public class GameServer {
@@ -17,6 +18,7 @@ public class GameServer {
     private static String serverName;
     private static List<LobbyInstance> lobbyInstances = new ArrayList<>();
     private static Map<Integer, ClientHandler> lobbyCreatorHandlers = new HashMap<>();
+
 
     public static void main(String[] args) {
         serverName = args.length > 0 ? args[0] : "Default Server";
@@ -98,12 +100,13 @@ public class GameServer {
                                 }
                                 
                             }
-                        case CREATEGAME:
+                        break;
+                        case STARTGAME:
+
+                            Game game = new Game(0, 0, null, null, 0, 0);
+                        
                             break;
-                        case GAMESTATE:
-                            break;
-                        case JOINSERVER:
-                            break;
+
                         default:
                             break;
                         

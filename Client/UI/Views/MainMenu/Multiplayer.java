@@ -11,10 +11,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.net.Socket;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Multiplayer extends JPanel implements PanelSwitcher {
+
+    String serverIp = "127.0.0.1"; //192.168.1.5
+
     @SuppressWarnings("unused")
     private List<String> availableServers = new ArrayList<>();
     private DefaultListModel<String> serverListModel = new DefaultListModel<>();
@@ -23,7 +28,9 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
 
     public Multiplayer() {
 
-        ImageIcon imageIcon = new ImageIcon("Client\\Assets\\Images\\Mis\\loading_screen_wallpaper.jpg");
+        Path path_background = Paths.get("Client", "Assets", "Images", "Mis", "loading_screen_wallpaper.jpg");
+
+        ImageIcon imageIcon = new ImageIcon(path_background.toString());
         Image image = imageIcon.getImage().getScaledInstance(960, 540, Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(image));
         background.setBounds(0, 0, 960, 540);
@@ -62,7 +69,6 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     int port = Integer.parseInt(parts[1].trim());
                     System.out.println(serverAddress + ":" + port);
 
-                    
                     GameClient client = new GameClient(serverAddress, port, player2);
                     String opponentString = client.connectToServer(RequestType.JOINLOBBY);
                     User player1 = new User(1, opponentString, "Crusader");
@@ -70,6 +76,8 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     players.add(player2);
 
                     switchPanel(new Lobby(players), "Lobby");
+
+                    // String Isrun = client.connectToServer();
 
                 }).start();
             } else {
@@ -89,11 +97,19 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     int port = requestServerCreation(serverName);
                     if (port != -1) {
                         
-                        GameClient client = new GameClient("192.168.1.5", port, player1);
+                        GameClient client = new GameClient(serverIp, port, player1);
                         String opponent_username = client.connectToServer(RequestType.CREATELOBBY);
                         User player2 = new User(2, opponent_username, "Muslim");
                         players.add(player2);
-                        switchPanel(new Lobby(players), "Lobby");
+                        Lobby lobby= new Lobby(players);
+                        switchPanel(lobby, "Lobby");
+
+                        lobby.getStartButton().addActionListener(e1 -> {
+
+                            client.connectToServer(RequestType.STARTGAME);
+                            
+                        });
+                        
 
                     }
                 }).start();
@@ -125,7 +141,7 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
 
 
     private int requestServerCreation(String serverName) {
-        String managementServerAddress = "192.168.1.5";
+        String managementServerAddress = serverIp; 
         int managementServerPort = 12346;
 
         try (Socket socket = new Socket(managementServerAddress, managementServerPort);

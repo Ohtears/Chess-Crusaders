@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import Client.Controllers.GameBoard;
 import Client.Models.*;
@@ -27,8 +29,8 @@ public class GameBoardUI extends JFrame {
         setTitle("Chess-Crusader");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
-
-        ImageIcon backgroundImage = new ImageIcon("Client/Assets/Images/GameBoard/gameboard.png");
+        Path path = Paths.get("Client", "Assets", "Images", "GameBoard", "gameboard.png");
+        ImageIcon backgroundImage = new ImageIcon(path.toString());
         JLabel backgroundLabel = new JLabel(backgroundImage);
 
         boardPanel = new JPanel(new GridLayout(8, 8));

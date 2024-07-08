@@ -5,12 +5,16 @@ import javax.swing.*;
 import Client.UI.Views.PanelSwitcher;
 
 import java.awt.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MainMenu extends JPanel implements PanelSwitcher {
 
     public MainMenu() {
 
-        ImageIcon imageIcon = new ImageIcon("Client\\Assets\\Images\\Mis\\loading_screen_wallpaper.jpg");
+        Path path_background = Paths.get("Client", "Assets", "Images", "Mis", "loading_screen_wallpaper.jpg");
+
+        ImageIcon imageIcon = new ImageIcon(path_background.toString());
         Image image = imageIcon.getImage().getScaledInstance(960, 540, Image.SCALE_SMOOTH);
         JLabel background = new JLabel(new ImageIcon(image));
         background.setBounds(0, 0, 960, 540);

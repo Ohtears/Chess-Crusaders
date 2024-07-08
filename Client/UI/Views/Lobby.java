@@ -3,6 +3,7 @@ package Client.UI.Views;
 import javax.swing.*;
 
 import Client.Models.User;
+import Client.UI.Views.Game.GameBoardUI;
 
 import java.awt.*;
 import java.awt.image.*;
@@ -15,6 +16,7 @@ public class Lobby extends JPanel {
     @SuppressWarnings("unused")
     private BufferedImage backgroundImg, playerListImg, boardImg, boardFrameImg, layoutListImg, modifiersImg, playerPanel;
     private List<User> playersinlby;
+    private JButton startGameButton;
 
     public Lobby(List<User> playersinlby) {
         this.playersinlby = playersinlby;
@@ -22,13 +24,22 @@ public class Lobby extends JPanel {
         this.setLayout(null);
 
         try {
-            backgroundImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\loading_screen_wallpaper.jpg"));
-            playerListImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\playerlist.png"));
-            boardImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\board1.png"));
-            boardFrameImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\frameborder.png"));
-            layoutListImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\borderlayout.png"));
-            modifiersImg = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\modifier.png"));
-            playerPanel = ImageIO.read(new File("Client\\Assets\\Images\\Mis\\player.png"));
+
+            Path path_backgroundimage = Paths.get("Client", "Assets", "Images", "Mis", "loading_screen_wallpaper.jpg");
+            Path path_playerlist = Paths.get("Client", "Assets", "Images", "Mis", "playerlist.png");
+            Path path_board = Paths.get("Client", "Assets", "Images", "Mis", "board1.png");
+            Path path_boardframe = Paths.get("Client", "Assets", "Images", "Mis", "frameborder.png");
+            Path path_layoutlist = Paths.get("Client", "Assets", "Images", "Mis", "borderlayout.png");
+            Path path_modifiers = Paths.get("Client", "Assets", "Images", "Mis", "modifier.png");
+            Path path_playerpanel = Paths.get("Client", "Assets", "Images", "Mis", "player.png");
+            
+            backgroundImg = ImageIO.read(new File(path_backgroundimage.toString()));
+            playerListImg = ImageIO.read(new File(path_playerlist.toString()));
+            boardImg = ImageIO.read(new File(path_board.toString()));
+            boardFrameImg = ImageIO.read(new File(path_boardframe.toString()));
+            layoutListImg = ImageIO.read(new File(path_layoutlist.toString()));
+            modifiersImg = ImageIO.read(new File(path_modifiers.toString()));
+            playerPanel = ImageIO.read(new File(path_playerpanel.toString()));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,12 +81,15 @@ public class Lobby extends JPanel {
         layoutListPanel.setBounds(681, 270, 265, 189);
         this.add(layoutListPanel);
 
-        JButton startGameButton = new JButton("Start Game");
+        startGameButton = new JButton("Start Game");
         startGameButton.setBounds(720, 470, 150, 30);
         startGameButton.addActionListener(e -> {
 
             
             
+
+
+            new GameBoardUI();
 
 
         });
@@ -122,6 +136,7 @@ public class Lobby extends JPanel {
         super.paintComponent(g);
         g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
     }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();

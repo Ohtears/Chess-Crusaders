@@ -3,6 +3,9 @@ package Client.UI.Views.MainMenu;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javax.sound.sampled.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -19,7 +22,8 @@ public class LoadingScreen extends JFrame {
 
         JLabel backgroundLabel = new JLabel();
         backgroundLabel.setBounds(0, 0, 960, 540);
-        ImageIcon backgroundImage = new ImageIcon(new ImageIcon("Client\\Assets\\Images\\Mis\\loading_screen_wallpaper.jpg")
+        Path path_backgroundimage = Paths.get("Client", "Assets", "Images", "Mis", "loading_screen_wallpaper.jpg");
+        ImageIcon backgroundImage = new ImageIcon(new ImageIcon(path_backgroundimage.toString())
                 .getImage().getScaledInstance(960, 540, Image.SCALE_SMOOTH));
         backgroundLabel.setIcon(backgroundImage);
         add(backgroundLabel);
@@ -29,7 +33,9 @@ public class LoadingScreen extends JFrame {
         progressBar.setStringPainted(true);
         backgroundLabel.add(progressBar);
 
-        playMusic("Client\\Assets\\Audios\\GameSoundtrack\\mainmenumusic.wav");
+        Path path_music = Paths.get("Client", "Assets", "Audios", "GameSoundtrack", "mainmenumusic.wav");
+
+        playMusic(path_music.toString());
 
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(new Runnable() {

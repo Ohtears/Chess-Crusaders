@@ -20,6 +20,7 @@ public class GameServer {
     private static List<LobbyInstance> lobbyInstances = new ArrayList<>();
     private static List<Game> games = new ArrayList<>();
     private static Map<Integer, ClientHandler> lobbyCreatorHandlers = new HashMap<>();
+    private static Map<User, ClientHandler> clientHandlers = new HashMap<>();
 
 
     public static void main(String[] args) {
@@ -87,12 +88,12 @@ public class GameServer {
                             break;
                         case JOINLOBBY:
                             Client client = JsonConvertor.JsonParserClient(jsonPayload);
-
+                            clientHandlers.put(client, this);
                             for (LobbyInstance lobby: lobbyInstances){
 
                                 int port = lobby.getport();
                                 if (port == client.getport()){
-
+                                    
                                     lobby.setPlayer(client);
                                     ClientHandler creatorHandler = lobbyCreatorHandlers.get(port);
                                     if (creatorHandler != null) {
@@ -111,24 +112,22 @@ public class GameServer {
                                 int port = lobby.getport();
                                 if (port == client1.getport()){
 
-                                    ClientHandler creatorHandler = lobbyCreatorHandlers.get(port);
-                                    if (creatorHandler != null) {
-                                        User crusaderplayer = lobby.getplayer1();
-                                        User muslimplayer = lobby.getplayer2();
+                                    User crusaderplayer = lobby.getplayer1();
+                                    User muslimplayer = lobby.getplayer2();
+                                    ClientHandler participiant = clientHandlers.get(muslimplayer);
 
-                                        Game game = new Game(0, 0, crusaderplayer, muslimplayer, 0, 0);
-                                        games.add(game);
+                                    Game game = new Game(0, 0, crusaderplayer, muslimplayer, 0, 0);
+                                    games.add(game);
 
-                                        creatorHandler.out.println("200");
-                                        out.println("200");
+                                    participiant.out.println("200");
+                                    out.println("200");
 
-                                    }
                                 }
                                 
                             }
                         break;
                         case WAITGAME:
-                            
+
                         break;
 
                         default:

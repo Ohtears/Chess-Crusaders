@@ -121,5 +121,14 @@ public class JsonConvertor {
 
     }
     
+    public static JSONObject waitForRequest(){
+
+        JSONObject request = new JSONObject();
+
+        request.put("RequestType", RequestType.WAITGAME);
+
+        return request;
+
+    }
 
 }

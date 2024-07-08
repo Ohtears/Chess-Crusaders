@@ -1,5 +1,7 @@
 package Client.Connections;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -92,6 +94,29 @@ public class JsonConvertor {
         Lobby.put("player", playersarray);
 
         return Lobby;
+
+    }
+
+    public static JSONObject createGame(List<User> players){
+
+        JSONObject game = new JSONObject();
+
+        game.put("RequestType", RequestType.CREATEGAME);
+
+        JSONArray playersarray = new JSONArray();
+
+        for (User player : players){
+
+            JSONObject playerjson = new JSONObject();
+
+            playerjson.put("userId", player.getUserId());
+            playerjson.put("username", player.getUsername());
+            playerjson.put("role", player.getRole());
+
+            playersarray.put(playerjson);
+        }
+
+
 
     }
 

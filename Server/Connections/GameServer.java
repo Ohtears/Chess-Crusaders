@@ -98,7 +98,7 @@ public class GameServer {
                                 }
                                 
                             }
-                        case CREATESERVER:
+                        case CREATEGAME:
                             break;
                         case GAMESTATE:
                             break;

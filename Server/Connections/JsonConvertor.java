@@ -41,6 +41,7 @@ public class JsonConvertor {
         return new LobbyInstance(players, port);
 
     }
+    @SuppressWarnings("unused")
     public static Client JsonParserClient(JSONObject jsonObject){
 
         int port = jsonObject.getInt("lobbyPort");

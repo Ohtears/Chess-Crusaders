@@ -9,10 +9,10 @@ import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 public class Lobby extends JPanel {
 
+    @SuppressWarnings("unused")
     private BufferedImage backgroundImg, playerListImg, boardImg, boardFrameImg, layoutListImg, modifiersImg, playerPanel;
     private List<User> playersinlby;
 
@@ -74,6 +74,9 @@ public class Lobby extends JPanel {
         startGameButton.setBounds(720, 470, 150, 30);
         startGameButton.addActionListener(e -> {
 
+            
+            
+
 
         });
         this.add(startGameButton);
@@ -119,12 +122,6 @@ public class Lobby extends JPanel {
         super.paintComponent(g);
         g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
     }
-
-    // private void setPlayer(User user){
-
-    //     players.add(user);
-
-    // }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();

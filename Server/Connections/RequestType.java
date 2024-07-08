@@ -2,7 +2,7 @@ package Server.Connections;
 
 public enum RequestType {
         
-    CREATESERVER,
+    CREATEGAME,
     JOINSERVER,
     GAMESTATE,
     CREATELOBBY,

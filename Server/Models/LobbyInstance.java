@@ -34,4 +34,8 @@ public class LobbyInstance {
         return players.get(0);
     }
 
+    public int getLobbyId(){
+        return lobbyid;
+    }
+
 }

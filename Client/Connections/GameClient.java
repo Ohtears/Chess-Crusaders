@@ -34,7 +34,8 @@ public class GameClient {
                 case JOINLOBBY:
                     stringRequest = joinLobby();
                     break;
-                case CREATESERVER:
+                case CREATEGAME:
+                    
                     break;
                 case GAMESTATE:
                     break;

@@ -2,6 +2,8 @@ package Client.Connections;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import javax.swing.DefaultListModel;
 
 public class ClientDiscovery {
@@ -15,10 +17,15 @@ public class ClientDiscovery {
     }
 
     public void discoverServers() {
-        try (DatagramSocket socket = new DatagramSocket(BROADCAST_PORT)) {
+        try {
+            DatagramSocket socket = new DatagramSocket(null);
+            socket.setReuseAddress(true);
+            socket.bind(new InetSocketAddress(BROADCAST_PORT)); 
+            socket.setBroadcast(true);
             byte[] buffer = new byte[256];
             DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-            while (running) { 
+
+            while (running) {
                 socket.receive(packet);
                 String received = new String(packet.getData(), 0, packet.getLength());
                 if (received.startsWith("GameServer:")) {
@@ -36,6 +43,6 @@ public class ClientDiscovery {
     }
 
     public void stopDiscovery() {
-        running = false; 
+        running = false;
     }
 }

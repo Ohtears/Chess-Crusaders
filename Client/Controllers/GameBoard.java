@@ -9,13 +9,13 @@ public class GameBoard {
 
     public static Tile[][] board = new Tile[8][8];
 
-    public void initializeBoard(Layout layout) {
+    public void initializeBoard(Layout layout, boolean isPlayer1) {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 board[i][j] = new Tile(i, j, Tile.Type.EMPTY);
             }
         }
-        new LayoutGame(layout, this);
+        new LayoutGame(layout, this, isPlayer1);
     }
 
     public void placeUnit(Unit unit, int x, int y) {

@@ -33,6 +33,9 @@ public class LobbyInstance {
     public User getplayer1(){
         return players.get(0);
     }
+    public User getplayer2(){
+        return players.get(1);
+    }
 
     public int getLobbyId(){
         return lobbyid;

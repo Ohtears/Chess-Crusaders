@@ -8,5 +8,5 @@ public enum RequestType {
     CREATELOBBY,
     JOINLOBBY,
     STARTGAME,
-
+    WAITGAME
 }

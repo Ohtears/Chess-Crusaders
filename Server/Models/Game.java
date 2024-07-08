@@ -1,7 +1,5 @@
 package Server.Models;
 
-import Client.Models.User;
-
 public class Game {
     
     private int gameId;

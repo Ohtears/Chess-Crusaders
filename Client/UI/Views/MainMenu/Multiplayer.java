@@ -6,6 +6,7 @@ import Client.Connections.RequestType;
 import Client.Models.User;
 import Client.UI.Views.Lobby;
 import Client.UI.Views.PanelSwitcher;
+import Client.UI.Views.Game.GameBoardUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class Multiplayer extends JPanel implements PanelSwitcher {
 
-    String serverIp = "127.0.0.1"; //192.168.1.5
+    String serverIp = "192.168.1.5"; //127.0.0.1
 
     @SuppressWarnings("unused")
     private List<String> availableServers = new ArrayList<>();
@@ -77,7 +78,13 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
 
                     switchPanel(new Lobby(players), "Lobby");
 
-                    // String Isrun = client.connectToServer();
+                    String request_status = client.connectToServer(RequestType.WAITGAME);
+
+                    if (request_status.equals("200")){
+
+                        new GameBoardUI(player2);
+                    }
+
 
                 }).start();
             } else {
@@ -106,8 +113,14 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
 
                         lobby.getStartButton().addActionListener(e1 -> {
 
-                            client.connectToServer(RequestType.STARTGAME);
+                            String request_status = client.connectToServer(RequestType.STARTGAME);
                             
+                            if (request_status.equals("200")){
+
+                                new GameBoardUI(player1);
+
+                            }
+
                         });
                         
 

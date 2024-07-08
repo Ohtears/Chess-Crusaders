@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import Server.Models.Client;
 import Server.Models.Game;
 import Server.Models.LobbyInstance;
+import Server.Models.User;
 
 public class GameServer {
     private static final int BROADCAST_PORT = 9876;
@@ -17,6 +18,7 @@ public class GameServer {
     private static List<ClientHandler> clients = new ArrayList<>();
     private static String serverName;
     private static List<LobbyInstance> lobbyInstances = new ArrayList<>();
+    private static List<Game> games = new ArrayList<>();
     private static Map<Integer, ClientHandler> lobbyCreatorHandlers = new HashMap<>();
 
 
@@ -102,9 +104,30 @@ public class GameServer {
                             }
                         break;
                         case STARTGAME:
+                            Client client1 = JsonConvertor.JsonParserClient(jsonPayload);
 
-                            Game game = new Game(0, 0, null, null, 0, 0);
-                        
+                            for (LobbyInstance lobby: lobbyInstances){
+
+                                int port = lobby.getport();
+                                if (port == client1.getport()){
+
+                                    ClientHandler creatorHandler = lobbyCreatorHandlers.get(port);
+                                    if (creatorHandler != null) {
+                                        User crusaderplayer = lobby.getplayer1();
+                                        User muslimplayer = lobby.getplayer2();
+
+                                        Game game = new Game(0, 0, crusaderplayer, muslimplayer, 0, 0);
+                                        games.add(game);
+
+                                        creatorHandler.out.println("200");
+                                        out.println("200");
+
+                                    }
+                                }
+                                
+                            }
+
+            
                             break;
 
                         default:

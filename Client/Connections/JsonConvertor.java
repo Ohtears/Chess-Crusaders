@@ -81,7 +81,6 @@ public class JsonConvertor {
 
         JSONArray playersarray = new JSONArray();
 
-
         JSONObject playerjson = new JSONObject();
 
         playerjson.put("userId", player.getUserId());
@@ -97,29 +96,30 @@ public class JsonConvertor {
 
     }
 
-    public static JSONObject createGame(List<User> players){
+    public static JSONObject startGame(int port, User player){
 
-        JSONObject game = new JSONObject();
+        JSONObject Lobby = new JSONObject();
 
-        game.put("RequestType", RequestType.CREATEGAME);
+        Lobby.put("RequestType", RequestType.STARTGAME);
+
+        Lobby.put("lobbyPort", port);
 
         JSONArray playersarray = new JSONArray();
 
-        for (User player : players){
+        JSONObject playerjson = new JSONObject();
 
-            JSONObject playerjson = new JSONObject();
+        playerjson.put("userId", player.getUserId());
+        playerjson.put("username", player.getUsername());
+        playerjson.put("role", player.getRole());
 
-            playerjson.put("userId", player.getUserId());
-            playerjson.put("username", player.getUsername());
-            playerjson.put("role", player.getRole());
+        playersarray.put(playerjson);
+        
 
-            playersarray.put(playerjson);
-        }
+        Lobby.put("player", playersarray);
 
-
+        return Lobby;
 
     }
-
     
 
 }

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -13,12 +14,20 @@ public class GameClient {
     private String serverAddress;
     private int port;
     private User player;
+    // private List<User> players;
 
     public GameClient(String serverAddress, int port, User player) {
         this.serverAddress = serverAddress;
         this.port = port;
         this.player = player;
     }
+    
+    // public GameClient(String serverAddress, int port, List<User> players) {
+    //     this.serverAddress = serverAddress;
+    //     this.port = port;
+    //     this.players = players;
+    // }
+    
 
     public String connectToServer(RequestType requestType) {
         try (Socket socket = new Socket(serverAddress, port);
@@ -34,13 +43,9 @@ public class GameClient {
                 case JOINLOBBY:
                     stringRequest = joinLobby();
                     break;
-                case CREATEGAME:
-                    
+                case STARTGAME:
+                    stringRequest = startGame();
                     break;
-                case GAMESTATE:
-                    break;
-                case JOINSERVER:
-                break;
                 default:
                     break;
     
@@ -69,6 +74,14 @@ public class GameClient {
     private String joinLobby(){
 
         JSONObject jsonRequest = JsonConvertor.joinLobby(port, player);
+        String stringRequest = jsonRequest.toString();
+        
+        return stringRequest;
+    }
+
+    private String startGame(){
+
+        JSONObject jsonRequest = JsonConvertor.startGame(port, player);
         String stringRequest = jsonRequest.toString();
         
         return stringRequest;

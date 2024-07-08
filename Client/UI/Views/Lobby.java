@@ -10,6 +10,8 @@ import java.awt.image.*;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 public class Lobby extends JPanel {
 
@@ -85,13 +87,6 @@ public class Lobby extends JPanel {
         startGameButton.setBounds(720, 470, 150, 30);
         startGameButton.addActionListener(e -> {
 
-            
-            
-
-
-            new GameBoardUI();
-
-
         });
         this.add(startGameButton);
 
@@ -137,6 +132,10 @@ public class Lobby extends JPanel {
         g.drawImage(backgroundImg, 0, 0, getWidth(), getHeight(), this);
     }
 
+    public JButton getStartButton(){
+
+        return startGameButton;
+    }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();

@@ -25,7 +25,8 @@ public class GameBoardUI extends JFrame {
     private Unit selectedUnit;
     private int selectedX, selectedY;
 
-    public GameBoardUI() {
+    public GameBoardUI(User user) {
+        boolean isPlayer1 = false;
         setTitle("Chess-Crusader");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
@@ -38,7 +39,14 @@ public class GameBoardUI extends JFrame {
         boardPanel.setPreferredSize(new Dimension(800, 800));
 
         gameBoard = new GameBoard();
-        gameBoard.initializeBoard(LayoutGame.Layout.DEFAULT);
+        if (user.getRole().equals("Crusader")) {
+            isPlayer1 = true; 
+        }
+        else if (user.getRole().equals("Muslim")){
+            isPlayer1 = false;
+        }
+        gameBoard.initializeBoard(LayoutGame.Layout.DEFAULT, isPlayer1);
+
 
         addUnits();
 
@@ -197,6 +205,6 @@ public class GameBoardUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GameBoardUI());
+        SwingUtilities.invokeLater(() -> new GameBoardUI(null));
     }
 }

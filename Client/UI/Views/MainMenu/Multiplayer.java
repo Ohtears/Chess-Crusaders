@@ -81,7 +81,8 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     String request_status = client.connectToServer(RequestType.WAITGAME);
 
                     if (request_status.equals("200")){
-
+                        
+                        MainFrame.instance.dispose();
                         new GameBoardUI(player2);
                     }
 
@@ -117,6 +118,7 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                             
                             if (request_status.equals("200")){
 
+                                MainFrame.instance.dispose();
                                 new GameBoardUI(player1);
 
                             }

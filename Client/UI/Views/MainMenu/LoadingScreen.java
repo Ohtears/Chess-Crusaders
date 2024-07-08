@@ -50,7 +50,7 @@ public class LoadingScreen extends JFrame {
                     executor.shutdown();
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
-                            new MainFrame();
+                            MainFrame.initialize();
                             dispose();
                         }
                     });

@@ -6,6 +6,8 @@ import javax.swing.*;
 
 public class MainFrame extends JFrame {
 
+    public static MainFrame instance;
+
     public static JPanel mainPanel;
 
     public MainFrame() {
@@ -24,7 +26,14 @@ public class MainFrame extends JFrame {
 
         setVisible(true);
     }
+    
+    public static void initialize() {
+        if (instance == null) {
+            instance = new MainFrame();
+        }
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainFrame::new);
     }
+
 }

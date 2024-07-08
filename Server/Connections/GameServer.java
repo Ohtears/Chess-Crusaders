@@ -126,9 +126,10 @@ public class GameServer {
                                 }
                                 
                             }
-
-            
-                            break;
+                        break;
+                        case WAITGAME:
+                            
+                        break;
 
                         default:
                             break;

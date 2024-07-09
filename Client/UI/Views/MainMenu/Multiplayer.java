@@ -77,14 +77,13 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                     players.add(player2);
 
                     switchPanel(new Lobby(players), "Lobby");
-                    // String request_status = client.connectToServer(RequestType.WAITGAME);
+                    String request_status = client.connectToServer(RequestType.WAITGAME);
 
                     
-                    System.out.println("salam");
-                    // if (request_status.equals("200")){
-                    //     MainFrame.instance.dispose();
-                    //     new GameBoardUI(player2);
-                    // }
+                    if (request_status.equals("200")){
+                        MainFrame.instance.dispose();
+                        new GameBoardUI(player2);
+                    }
 
 
                 }).start();
@@ -104,7 +103,9 @@ public class Multiplayer extends JPanel implements PanelSwitcher {
                 new Thread(() -> {
                     int port = requestServerCreation(serverName);
                     if (port != -1) {
-                        
+
+                        discoveryThread.stopDiscovery();
+
                         GameClient client = new GameClient(serverIp, port, player1);
                         String opponent_username = client.connectToServer(RequestType.CREATELOBBY);
                         User player2 = new User(2, opponent_username, "Muslim");

@@ -25,15 +25,23 @@ public class GameServer {
 
     public static void main(String[] args) {
         serverName = args.length > 0 ? args[0] : "Default Server";
-        int port = args.length > 1 ? Integer.parseInt(args[1]) : 12345; // Default 
-
+        int port = args.length > 1 ? Integer.parseInt(args[1]) : 12345; // Default
+    
         System.out.println("Starting server: " + serverName + " on port: " + port);
-
+    
         new Thread(() -> broadcastServer(port)).start();
-
+    
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            System.out.println("Server started on port: " + port);
             while (true) {
                 Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected: " + clientSocket.getInetAddress());
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
                 clients.add(clientHandler);
                 new Thread(clientHandler).start();

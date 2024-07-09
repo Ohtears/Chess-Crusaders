@@ -10,8 +10,7 @@ import javax.sound.sampled.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-// Server.Connections.GameServer$ClientHandler@6d920dfa
-// Server.Models.Client@69ad9417=Server.Connections.GameServer$ClientHandler@6d920dfa
+
 public class LoadingScreen extends JFrame {
 
     public LoadingScreen() {

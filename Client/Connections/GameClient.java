@@ -19,43 +19,53 @@ public class GameClient {
         this.player = player;
     }
 
-
     public String connectToServer(RequestType requestType) {
-        try (Socket socket = new Socket(serverAddress, port);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
-            
-            String stringRequest = null;
-
-            switch (requestType){
-                case CREATELOBBY:
-                    stringRequest = createLobby();
-                    break;
-                case JOINLOBBY:
-                    stringRequest = joinLobby();
-                    break;
-                case STARTGAME:
-                    stringRequest = startGame();
-                    break;
-                case WAITGAME:
-                    stringRequest = waitGame();
-                    break;
-                default:
-                    break;
+        int attempts = 5; // Number of connection attempts
+        while (attempts > 0) {
+            System.out.println("Attempting to connect to server at " + serverAddress + ":" + port);
+            try (Socket socket = new Socket(serverAddress, port);
+                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
     
+                String stringRequest = null;
+    
+                switch (requestType) {
+                    case CREATELOBBY:
+                        stringRequest = createLobby();
+                        break;
+                    case JOINLOBBY:
+                        stringRequest = joinLobby();
+                        break;
+                    case STARTGAME:
+                        stringRequest = startGame();
+                        break;
+                    case WAITGAME:
+                        stringRequest = waitGame();
+                        break;
+                    default:
+                        break;
+                }
+    
+                System.out.println("Sending request: " + stringRequest);
+                out.println(stringRequest);
+                String response = in.readLine();
+                System.out.println("Server response: " + response);
+    
+                return response;
+            } catch (Exception e) {
+                System.err.println("Error connecting to server: " + e.getMessage());
+                e.printStackTrace();
+                attempts--;
+                try {
+                    Thread.sleep(2000); // Wait before retrying
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
             }
-            
-            System.out.println("Sending request: " + stringRequest);
-            out.println(stringRequest);
-            String response = in.readLine();
-            System.out.println("Server response: " + response);
-
-            return response;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return null;
     }
+    
 
     private String createLobby(){
             
